@@ -52,10 +52,11 @@ const Search = () => {
         resizeMode="cover"
       />
 
-      <FlatList
+       <FlatList
         className="px-5"
         data={movies as Movie[]}
-        keyExtractor={(item) => item.id.toString()}
+        
+        keyExtractor={(item) => item?.id?.toString() }
         renderItem={({ item }) => <MovieDisplayCard {...item} />}
         numColumns={3}
         columnWrapperStyle={{
@@ -114,7 +115,7 @@ const Search = () => {
             </View>
           ) : null
         }
-      />
+      /> 
     </View>
   );
 };

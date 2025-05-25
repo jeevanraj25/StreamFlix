@@ -8,10 +8,13 @@ import {
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { WebView } from "react-native-webview";
+import YoutubePlayer from "react-native-youtube-iframe";
 
 import { icons } from "@/constants/icons";
 import useFetch from "@/services/usefetch";
-import { fetchMovieDetails } from "@/services/api";
+import { fetchMovieDetails,fetchMovieVideo } from "@/services/api";
+import { useState } from "react";
 
 interface MovieInfoProps {
   label: string;
@@ -30,10 +33,18 @@ const MovieInfo = ({ label, value }: MovieInfoProps) => (
 const Details = () => {
   const router = useRouter();
   const { id } = useLocalSearchParams();
+    const [showVideo, setShowVideo] = useState(false);
 
-  const { data: movie, loading } = useFetch(() =>
-    fetchMovieDetails(id as string)
-  );
+  const handlePlayPress = () => {
+    setShowVideo(true);
+  };
+
+
+
+  const {data : videos,loading: videoLoading,error: videoError} = useFetch(() => fetchMovieVideo(id as string));
+  const { data: movie, loading } = useFetch(() =>fetchMovieDetails(id as string));
+
+
 
   if (loading)
     return (
@@ -46,6 +57,14 @@ const Details = () => {
     <View className="bg-primary flex-1">
       <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
         <View>
+          {showVideo ? (
+              <YoutubePlayer
+            height={250}
+            play={true}
+            videoId={videos?.key}
+            />
+      ) : (
+        <>
           <Image
             source={{
               uri: `https://image.tmdb.org/t/p/w500${movie?.poster_path}`,
@@ -53,14 +72,21 @@ const Details = () => {
             className="w-full h-[550px]"
             resizeMode="stretch"
           />
-
-          <TouchableOpacity className="absolute bottom-5 right-5 rounded-full size-14 bg-white flex items-center justify-center">
+         { !videoError && 
+              <TouchableOpacity
+            className="absolute bottom-5 right-5 rounded-full size-14 bg-white flex items-center justify-center"
+            onPress={handlePlayPress}
+          >
             <Image
               source={icons.play}
               className="w-6 h-7 ml-1"
               resizeMode="stretch"
             />
           </TouchableOpacity>
+          }
+         
+        </>
+      )}
         </View>
 
         <View className="flex-col items-start justify-center mt-5 px-5">

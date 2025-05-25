@@ -9,7 +9,7 @@ import {
 import { useRouter } from "expo-router";
 
 import useFetch from "@/services/usefetch";
-import { fetchMovies } from "@/services/api";
+import { fetchMovies,fetchTvShow } from "@/services/api";
 import { getTrendingMovies } from "@/services/appwrite";
 
 import { icons } from "@/constants/icons";
@@ -18,6 +18,7 @@ import { images } from "@/constants/images";
 import SearchBar from "@/components/SearchBar";
 import MovieCard from "@/components/MovieCard";
 import TrendingCard from "@/components/TrendingCard";
+import TvCard from "@/components/TvCard";
 
 const Index = () => {
   const router = useRouter();
@@ -33,6 +34,13 @@ const Index = () => {
     loading: moviesLoading,
     error: moviesError,
   } = useFetch(() => fetchMovies({ query: "" }));
+
+ const {
+  data: tvShows,
+  loading: tvShowLoading,
+  error: tvShowError
+} = useFetch(() => fetchTvShow({ query: "" }));
+
 
   return (
     <View className="flex-1 bg-primary">
@@ -55,7 +63,7 @@ const Index = () => {
             color="#0000ff"
             className="mt-10 self-center"
           />
-        ) : moviesError || trendingError ? (
+        ) : moviesError || trendingError || tvShowError ? (
           <Text>Error: {moviesError?.message || trendingError?.message}</Text>
         ) : (
           <View className="flex-1 mt-5">
@@ -82,7 +90,7 @@ const Index = () => {
                   renderItem={({ item, index }) => (
                     <TrendingCard movie={item} index={index} />
                   )}
-                  keyExtractor={(item) => item.movie_id.toString()}
+                  keyExtractor={(item) => item?.movie_id?.toString()}
                   ItemSeparatorComponent={() => <View className="w-4" />}
                 />
               </View>
@@ -94,20 +102,45 @@ const Index = () => {
               </Text>
 
               <FlatList
-                data={movies}
+                data={movies?.slice(0, 12)}
                 renderItem={({ item }) => <MovieCard {...item} />}
-                keyExtractor={(item) => item.id.toString()}
+                keyExtractor={(item) => item?.id?.toString() }
                 numColumns={3}
                 columnWrapperStyle={{
                   justifyContent: "flex-start",
+
                   gap: 20,
                   paddingRight: 5,
                   marginBottom: 10,
                 }}
-                className="mt-2 pb-32"
+                className="mt-4 "
                 scrollEnabled={false}
               />
+
+               <Text className="text-lg text-white font-bold mt-7 mb-5">
+                Latest TV Shows
+              </Text>
+              <FlatList 
+                 data={tvShows?.slice(0,12)}
+                 renderItem={({item}) => <TvCard {...item} />}
+                 keyExtractor={(item) => item?.id?.toString()}
+                 numColumns={3}
+                 columnWrapperStyle={{
+                   justifyContent: "flex-start",
+                   gap: 20,
+                   paddingRight: 5,
+                   marginBottom: 10,
+                 }}
+                 className="mt-4 mb-2 pb-32"
+                 scrollEnabled={false}
+
+                /> 
             </>
+
+        
+             
+              
+      
           </View>
         )}
       </ScrollView>

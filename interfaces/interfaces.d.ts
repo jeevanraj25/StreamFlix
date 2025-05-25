@@ -15,6 +15,24 @@ interface Movie {
   vote_count: number;
 }
 
+interface TVShow {
+  id: number;
+  name: string;
+  original_name: string;
+  adult: boolean;
+  backdrop_path: string;
+  genre_ids: number[];
+  origin_country: string[];
+  original_language: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  first_air_date: string;
+  vote_average: number;
+  vote_count: number;
+}
+
+
 interface TrendingMovie {
   searchTerm: string;
   movie_id: number;
@@ -74,4 +92,18 @@ interface MovieDetails {
 interface TrendingCardProps {
   movie: TrendingMovie;
   index: number;
+}
+
+
+interface Video {
+  iso_639_1: string;
+  iso_3166_1: string;
+  name: string;
+  key: string;         // YouTube video key
+  site: string;        // e.g., "YouTube"
+  size: number;        // e.g., 1080
+  type: string;        // e.g., "Behind the Scenes", "Trailer"
+  official: boolean;
+  published_at: string; // ISO date string
+  id: string;           // TMDB video ID
 }
