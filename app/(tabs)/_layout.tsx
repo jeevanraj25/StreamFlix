@@ -27,6 +27,7 @@ function TabIcon({ focused, icon, title }: any) {
 }
 
 export default function TabsLayout() {
+
   return (
     <Tabs
       screenOptions={{
@@ -55,7 +56,7 @@ export default function TabsLayout() {
         options={{
           title: "index",
           headerShown: false,
-          tabBarIcon: ({ focused }) => (
+          tabBarIcon: ({ focused }: any) => (
             <TabIcon focused={focused} icon={icons.home} title="Home" />
           ),
         }}
@@ -66,7 +67,7 @@ export default function TabsLayout() {
         options={{
           title: "Search",
           headerShown: false,
-          tabBarIcon: ({ focused }) => (
+          tabBarIcon: ({ focused }:any) => (
             <TabIcon focused={focused} icon={icons.search} title="Search" />
           ),
         }}
@@ -78,8 +79,8 @@ export default function TabsLayout() {
         options={{
           title: "Genre",
           headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} icon={icons.save} title="Genre" />
+          tabBarIcon: ({ focused }:any) => (
+            <TabIcon focused={focused} icon={icons.genre} title="Genre" />
           ),
         }}
       />
@@ -89,8 +90,8 @@ export default function TabsLayout() {
         options={{
           title: "Profile",
           headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} icon={icons.person} title="Profile" />
+          tabBarIcon: ({ focused }:any) => (
+            <TabIcon focused={focused} icon={icons.upcoming} title="Upcoming" />
           ),
         }}
       />

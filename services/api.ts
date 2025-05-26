@@ -122,3 +122,50 @@ export const fecthGenres = async () =>{
      throw error;
    }
 }
+
+export const FetchMovieGenre =async (genre: string):Promise<Movie[]> =>{
+
+  try {
+    const response =await fetch(
+      `${TMDB_CONFIG.BASE_URL}/discover/movie?with_genres=${genre}?api_key=${TMDB_CONFIG.API_KEY}`,
+      {
+        method: "GET",
+        headers: TMDB_CONFIG.headers,
+      }
+    );
+    
+    if(!response.ok){
+      throw new Error(`Failed to fetch movie genres: ${response.statusText}`);
+    }
+
+     const data = await response.json();
+       return data.results;
+  } catch (error) {
+     console.error("Error fetching movie genres:", error);
+     throw error;
+  }
+}
+
+
+export const UpcomingMovies =async ():Promise<Movie[]> =>{
+
+  try {
+    const response =await fetch(
+      `${TMDB_CONFIG.BASE_URL}/movie/upcoming?api_key=${TMDB_CONFIG.API_KEY}`,
+      {
+        method: "GET",
+        headers: TMDB_CONFIG.headers,
+      }
+    );
+    
+    if(!response.ok){
+      throw new Error(`Failed to fetch upcoming movies: ${response.statusText}`);
+    }
+
+        const data = await response.json();
+       return data.results;
+  } catch (error) {
+     console.error("Error fetching upcoming movies:", error);
+     throw error;
+  }
+}
